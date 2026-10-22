@@ -1,2 +1,31 @@
 ---
+// 프로젝트 페이지 아래 반응·댓글. 설정이 하나라도 없으면 아무것도 출력하지 않는다.
+const repo = import.meta.env.PUBLIC_GISCUS_REPO;
+const repoId = import.meta.env.PUBLIC_GISCUS_REPO_ID;
+const category = import.meta.env.PUBLIC_GISCUS_CATEGORY;
+const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
+const enabled = Boolean(repo && repoId && category && categoryId);
 ---
+{enabled && (
+  <section class="mt-16 border-t border-line pt-8" aria-label="반응과 댓글">
+    <script
+      is:inline
+      data-astro-rerun
+      src="https://giscus.app/client.js"
+      data-repo={repo}
+      data-repo-id={repoId}
+      data-category={category}
+      data-category-id={categoryId}
+      data-mapping="pathname"
+      data-strict="1"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="top"
+      data-theme="light"
+      data-lang="ko"
+      data-loading="lazy"
+      crossorigin="anonymous"
+      async
+    ></script>
+  </section>
+)}
