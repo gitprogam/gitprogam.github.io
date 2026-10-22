@@ -37,7 +37,7 @@ const ym = (d: Date) => `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1).pad
 
 export function formatPeriod(p: Period, status: Status): string {
   const start = ym(p.start);
-  if (!p.end) return status === 'done' ? start : `${start} ~`;
+  if (!p.end) return status === 'done' ? start : `${start} – 지금`;
   const end = ym(p.end);
   return start === end ? start : `${start} – ${end}`;
 }

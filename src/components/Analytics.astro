@@ -1,0 +1,7 @@
+---
+// Cloudflare Web Analytics. 토큰이 없으면 아무것도 출력하지 않는다.
+const token = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
+---
+{token && (
+  <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token, spa: true })}></script>
+)}

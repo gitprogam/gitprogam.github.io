@@ -1,0 +1,32 @@
+---
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectMeta from '../../components/ProjectMeta.astro';
+import Giscus from '../../components/Giscus.astro';
+import { getProjects } from '../../lib/content';
+import { formatPeriod } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+---
+<BaseLayout title={`${d.title} — gitprogam`} description={d.summary} image={d.cover?.src}>
+  <article data-project={entry.id} data-group={d.group} class="mx-auto max-w-5xl px-4 pt-10 pb-16 sm:px-6 sm:pt-14">
+    <p class="text-sm text-sub">{formatPeriod(d.period, d.status)} · {d.context}</p>
+    <h1 class="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{d.title}</h1>
+    <p class="mt-2 text-lg text-sub">{d.summary}</p>
+    {d.cover && (
+      <Image src={d.cover} alt={d.coverAlt!} widths={[640, 1024, 1440]} sizes="(min-width: 1024px) 1024px, 100vw" loading="eager" class="mt-8 w-full rounded-2xl border border-line" />
+    )}
+    <div class="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_14rem]">
+      <ProjectMeta data={d} class="lg:order-2 lg:sticky lg:top-20 lg:self-start" />
+      <div data-body class="prose-ko min-w-0 lg:order-1"><Content /></div>
+    </div>
+    <Giscus />
+  </article>
+</BaseLayout>

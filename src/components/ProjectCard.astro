@@ -1,0 +1,26 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { formatPeriod } from '../lib/projects';
+
+interface Props { entry: CollectionEntry<'projects'>; variant: 'feature' | 'tile' }
+const { entry, variant } = Astro.props;
+const d = entry.data;
+const href = `/projects/${entry.id}/`;
+---
+{variant === 'feature' ? (
+  <a href={href} class="grid items-end gap-6 overflow-hidden rounded-3xl bg-white px-6 pt-6 ring-1 ring-line hover:ring-line-strong sm:grid-cols-[1fr_1.15fr] sm:px-8 sm:pt-8">
+    <div class="pb-6 sm:pb-8">
+      <h3 class="text-2xl font-bold tracking-tight">{d.title}</h3>
+      <p class="mt-2 text-sub">{d.summary}</p>
+      <span class="mt-4 inline-block text-link">자세히 보기</span>
+    </div>
+    {d.cover && <Image src={d.cover} alt={d.coverAlt!} widths={[480, 800]} sizes="(min-width: 640px) 480px, 100vw" class="rounded-t-xl border border-b-0 border-line" />}
+  </a>
+) : (
+  <a href={href} class="block rounded-2xl bg-white p-5 ring-1 ring-line hover:ring-line-strong">
+    <p class="text-xs text-sub">{formatPeriod(d.period, d.status)} · {d.context}</p>
+    <h3 class="mt-1 text-lg font-bold tracking-tight">{d.title}</h3>
+    <p class="mt-1 text-sm text-sub">{d.summary}</p>
+  </a>
+)}

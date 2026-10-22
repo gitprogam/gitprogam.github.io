@@ -1,1 +1,42 @@
 @import "tailwindcss";
+@import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
+
+@theme {
+  --color-ink: #1d1d1f;
+  --color-paper: #fbfbfd;
+  --color-mist: #f5f5f7;
+  --color-sub: #6e6e73;
+  --color-line: #e8e8ed;
+  --color-line-strong: #d2d2d7;
+  --color-link: #0066cc;
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, -apple-system, sans-serif;
+}
+
+html { background: var(--color-paper); color: var(--color-ink); -webkit-text-size-adjust: 100%; }
+body { font-family: var(--font-sans); word-break: keep-all; overflow-wrap: anywhere; }
+
+:focus-visible { outline: 2px solid var(--color-link); outline-offset: 3px; border-radius: 4px; }
+
+.skip-link { position: absolute; left: -9999px; top: 0.5rem; }
+.skip-link:focus { left: 0.5rem; z-index: 50; background: white; padding: 0.5rem 0.75rem; }
+
+/* 본문(MDX) 서식 */
+.prose-ko { font-size: 1.0625rem; line-height: 1.8; max-width: 40rem; }
+.prose-ko > * + * { margin-top: 1.1em; }
+.prose-ko h2 { font-size: 1.375rem; font-weight: 700; letter-spacing: -0.02em; margin-top: 2.4em; line-height: 1.35; }
+.prose-ko h3 { font-size: 1.125rem; font-weight: 700; margin-top: 1.8em; }
+.prose-ko a { color: var(--color-link); text-underline-offset: 3px; }
+.prose-ko a:hover { text-decoration: underline; }
+.prose-ko ul { list-style: disc; padding-left: 1.25em; }
+.prose-ko ol { list-style: decimal; padding-left: 1.25em; }
+.prose-ko li + li { margin-top: 0.35em; }
+.prose-ko code { font-size: 0.9em; background: var(--color-mist); padding: 0.1em 0.35em; border-radius: 4px; }
+.prose-ko pre { background: var(--color-mist); padding: 1rem; border-radius: 12px; overflow-x: auto; font-size: 0.875rem; line-height: 1.6; }
+.prose-ko pre code { background: none; padding: 0; }
+.prose-ko img, .prose-ko video { border-radius: 12px; border: 1px solid var(--color-line); }
+.prose-ko blockquote { border-left: 3px solid var(--color-line-strong); padding-left: 1rem; color: var(--color-sub); }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  * { scroll-behavior: auto !important; }
+}

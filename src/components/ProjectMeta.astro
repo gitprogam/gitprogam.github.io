@@ -1,0 +1,22 @@
+---
+import { metaRows } from '../lib/projects';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { data: CollectionEntry<'projects'>['data']; class?: string }
+const { data, class: cls } = Astro.props;
+const rows = metaRows(data);
+---
+<aside class:list={['border-t-2 border-ink pt-3 text-sm', cls]} aria-label="프로젝트 요약">
+  <dl>
+    {rows.map((r) => (
+      <>
+        <dt class="mt-3 text-xs text-sub first:mt-0">{r.label}</dt>
+        <dd class="mt-0.5">
+          {r.kind === 'text' && r.value}
+          {r.kind === 'tags' && (r.value as string[]).map((t) => <span class="mr-1 mb-1 inline-block rounded-full bg-mist px-2.5 py-0.5 text-xs text-sub">{t}</span>)}
+          {r.kind === 'links' && (r.value as { text: string; href: string }[]).map((l) => <a href={l.href} class="block text-link hover:underline">{l.text}</a>)}
+        </dd>
+      </>
+    ))}
+  </dl>
+</aside>

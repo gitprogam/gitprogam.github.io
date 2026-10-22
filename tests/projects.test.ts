@@ -55,9 +55,9 @@ describe('formatPeriod', () => {
   it('달이 다르면 범위', () => {
     expect(formatPeriod({ start: d('2025-09-01'), end: d('2025-12-15') }, 'done')).toBe('2025.09 – 2025.12');
   });
-  it('끝이 없고 운영 중·개발 중이면 물결표', () => {
-    expect(formatPeriod({ start: d('2026-06-03') }, 'live')).toBe('2026.06 ~');
-    expect(formatPeriod({ start: d('2026-07-27') }, 'wip')).toBe('2026.07 ~');
+  it('끝이 없고 운영 중·개발 중이면 "– 지금"', () => {
+    expect(formatPeriod({ start: d('2026-06-03') }, 'live')).toBe('2026.06 – 지금');
+    expect(formatPeriod({ start: d('2026-07-27') }, 'wip')).toBe('2026.07 – 지금');
   });
   it('끝이 없고 완료면 시작 달만', () => {
     expect(formatPeriod({ start: d('2026-04-28') }, 'done')).toBe('2026.04');
