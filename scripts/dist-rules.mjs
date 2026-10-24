@@ -49,6 +49,8 @@ export function checkProjectPage(html, minChars) {
   const body = article.querySelector('[data-body]');
   const n = body ? body.textContent.replace(/\s+/g, '').length : 0;
   if (n < minChars) out.push(`본문 ${n}자 < ${minChars}자`);
+  // binaryhub 링크는 운영 중인 서비스 글에만 요구한다. 연구·프로젝트 글은 걸 만한 관련 글이 없으면 억지로 넣지 않는다.
+  if (article.getAttribute('data-group') !== 'live') return out;
   const hasOwn = article.querySelectorAll('a[href]').some((a) => OWN.test(host(a.getAttribute('href'))));
   if (!hasOwn) out.push('binaryhub 링크 없음');
   return out;

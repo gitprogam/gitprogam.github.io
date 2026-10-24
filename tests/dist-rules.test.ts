@@ -54,8 +54,16 @@ describe('checkProjectPage', () => {
   it('binaryhub 링크가 없으면 문제', () => {
     expect(checkProjectPage(body(1600, ''), 1500).join()).toMatch(/binaryhub/);
   });
+  it('연구·프로젝트 글은 binaryhub 링크가 없어도 된다', () => {
+    const html = page('', `<article data-project="x" data-group="project"><div data-body><p>${'가'.repeat(1600)}</p></div></article>`);
+    expect(checkProjectPage(html, 1500)).toEqual([]);
+  });
+  it('연구·프로젝트 글도 본문이 짧으면 문제', () => {
+    const html = page('', `<article data-project="x" data-group="project"><div data-body><p>${'가'.repeat(100)}</p></div></article>`);
+    expect(checkProjectPage(html, 1500).join()).toMatch(/1500/);
+  });
   it('요약 칸에 있는 링크도 인정한다', () => {
-    const html = page('', `<article data-project="x" data-group="project"><aside><a href="https://blog.binaryhub.club/p/">글</a></aside><div data-body><p>${'가'.repeat(1600)}</p></div></article>`);
+    const html = page('', `<article data-project="x" data-group="live"><aside><a href="https://blog.binaryhub.club/p/">글</a></aside><div data-body><p>${'가'.repeat(1600)}</p></div></article>`);
     expect(checkProjectPage(html, 1500)).toEqual([]);
   });
   it('프로젝트 페이지가 아니면 검사하지 않는다', () => {
