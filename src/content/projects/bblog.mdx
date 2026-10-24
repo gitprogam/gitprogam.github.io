@@ -2,17 +2,58 @@
 title: BBlog
 summary: 동아리의 개발·연구 기록을 쓰는 블로그
 context: blog.binaryhub.club
-period: { start: 2026-09-01 }
+period: { start: 2026-08-20 }
 status: live
 group: live
 role: 구축·운영
-stack: [Ghost, Docker]
+stack: [Ghost, Docker, MySQL, Caddy]
 links:
   site: https://blog.binaryhub.club/
+  posts:
+    - title: BBLog 개편
+      url: https://blog.binaryhub.club/bblog-gaepyeon/
 order: 3
 cover: ../../assets/shots/bblog.png
 coverAlt: BBlog 대문. "Binary Builders — 개발·연구·운영 기록" 제목과 구독 입력칸
-draft: true
+draft: false
 ---
 
-{/* 본문은 Task 8/10 */}
+import { Image } from 'astro:assets';
+import postShot from '../../assets/shots/bblog-post.png';
+
+## 직접 만든 블로그에서 Ghost 로
+
+동아리에서 만든 거랑 공부한 걸 한곳에 모아 두고, 밖에서도 볼 수 있게 하려고 만든 블로그예요. 원래는 Next.js 앱 안에 마크다운 파일로 글을 쓰는 블로그를 직접 만들어 쓰고 있었어요. 근데 검색 노출이나 확장성, 유지보수 쪽으로 한계가 있겠다는 의견이 나와서 2026년 8월에 Ghost 로 옮겼어요. Ghost 는 오픈소스라 지금은 거의 기본 기능만 쓰고 있어도, 나중에 필요하면 코드를 뜯어고쳐 쓸 수 있다는 것도 컸고요.
+
+부원들한테는 초대 메일을 다 보냈고, 이제 다들 직접 로그인해서 글을 써요.
+
+## 뭐가 올라오냐면
+
+[BBlog](https://blog.binaryhub.club/)에는 개발 기록이랑 연구 일지가 주로 올라와요. 글은 연구, 개발, 가이드, 잡담 네 가지로 나눠서 홈에 분류별로 보여 주는데, 연구 일지부터 게임 공략, 음악 얘기까지 부원마다 쓰는 게 진짜 제각각이에요 ㅋㅋ 독자는 이메일로 가입해서 새 글 소식을 받거나 댓글을 달 수 있어요. 가입, 뉴스레터, 댓글은 Ghost 기본 기능 그대로예요.
+
+옛 블로그 글은 안 옮겼어요. 새 플랫폼이니까 그냥 새로 시작하기로 했고, 옛 블로그는 버리기 아까워서 내리지는 않고 검색에서만 빠지게 했어요. 옛 페이지들이 응답할 때 "색인하지 마세요" 헤더(`X-Robots-Tag: noindex`)를 같이 보내는 방식이에요. 들어가면 열리긴 하는데 검색엔 안 나와요.
+
+<figure>
+<Image src={postShot} alt="BBlog 의 글 화면. StudyAce 2.0 개발기 ① 처음부터 다시" widths={[640, 1024]} sizes="(min-width: 1024px) 640px, 100vw" />
+<figcaption>BBlog 에 올라간 글 화면. 동아리 서비스 개발기도 여기에 연재해요.</figcaption>
+</figure>
+
+## 어떻게 띄웠냐면
+
+Ghost 랑 DB(MySQL 8)를 Docker Compose 로 띄웠어요. Ghost 는 이 PC 안에서만 접속되게 열어 두고, 밖에서 오는 요청은 Cloudflare Tunnel 이랑 프록시(Caddy)를 거쳐서만 들어오게 했어요. DB 는 컨테이너 네트워크 안에만 있고 바깥으론 아예 안 열려 있어요. 그리고 DB 가 준비되기 전에 Ghost 가 먼저 뜨면 연결이 실패해서, MySQL 상태 검사가 통과한 다음에 Ghost 가 뜨도록 순서를 걸어 뒀어요. 비밀번호 같은 값은 설정 파일에 직접 안 쓰고 환경변수 파일에서 넣어 줘요.
+
+Docker 를 쓴 이유는 단순해요. Ghost 는 우리가 만드는 앱이 아니라 가져다 쓰는 서비스라서, 설치 과정이랑 버전을 통째로 고정해 두는 게 편했어요. 그래서 직접 만드는 앱은 컨테이너 없이, 가져다 쓰는 서비스만 컨테이너로 나눠서 돌려요.
+
+## 슬래시 하나 때문에 404
+
+광고 심사를 받으려면 `ads.txt` 라는 파일을 `/ads.txt` 주소에 올려 둬야 해요. 근데 Ghost 는 주소 끝에 슬래시를 강제로 붙이는 규칙이 있어서, `/ads.txt` 로 온 요청을 `/ads.txt/` 로 보내 버리더라구요. 그 주소엔 아무것도 없으니 404... 광고 쪽에선 파일을 못 찾는다는 오류가 계속 떴어요 ㅠㅠ
+
+Ghost 에는 이 파일을 따로 설정하는 방법이 없어서, Ghost 앞에 있는 프록시에서 `/ads.txt` 요청만 가로채서 정해진 내용을 바로 돌려주게 했어요. 같은 이유로 Ghost 의 RSS 주소는 `/rss.xml` 이 아니라 `/rss/` 예요. 옛 블로그 피드를 구독하던 사람이 안 끊기게 옛 주소는 Ghost 피드로 301 시켰어요.
+
+## 메뉴 하나 바꾸는데 501
+
+광고 심사 때문에 개인정보처리방침(13개 항목), 이용약관(8개 조항), 문의 페이지도 만들었어요. 페이지는 Ghost 관리 API 로 만들었는데, 이걸 꼬리말 메뉴에 거는 설정 변경 요청은 같은 API 에서 501(지원 안 함)로 튕기더라구요. 관리 화면에서 손으로 바꿔도 되긴 했는데, 이번엔 DB 의 설정 값을 직접 고치고 Ghost 컨테이너를 다시 띄워서 반영했어요. 고치기 전 값은 따로 적어 둬서 언제든 되돌릴 수 있게 했고요.
+
+## 지금은
+
+부원들이 연구 일지, 개발기, 공부한 것들을 올리고 있고, 2026년 10월 기준으로 공개된 글이 17편이에요. [StudyAce 2.0 개발기](https://blog.binaryhub.club/studyace2-01-rebuild-decision/)처럼 동아리 서비스 만드는 과정도 여기에 연재하고 있어요. 개편할 때 잡은 목표는 거창한 게 아니라 그냥 꾸준하게 품질 좋은 글을 쓰는 거였어요.

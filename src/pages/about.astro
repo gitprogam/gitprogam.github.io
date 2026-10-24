@@ -1,11 +1,55 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getProjects } from '../lib/content';
+
+// 아직 공개 전(초안)인 프로젝트로는 링크하지 않는다. 배포본에서 깨진 링크가 된다.
+const published = new Set((await getProjects()).map((e) => `/projects/${e.id}/`));
+
+const stacks = [
+  { area: '웹', items: 'TypeScript, Next.js, React, Tailwind CSS, Astro' },
+  { area: '서버·운영', items: 'Cloudflare Tunnel·Workers·Pages·D1, Caddy, PM2, Docker, SQLite, MySQL' },
+  { area: '게임·그래픽', items: 'Unity(C#), Godot, Phaser, PixiJS, Three.js' },
+  { area: '데이터', items: 'Python, EconML, scikit-learn' },
+];
+
+const timeline = [
+  { when: '2025년 2학기', what: '창의개인연구로 웹에서 보행자랑 자동차 움직임을 시뮬레이션해 봤어요.', href: '/projects/cre-2025/' },
+  { when: '2026년 상반기', what: '시험 기간에 친구들이랑 쓰려고 인출 학습 사이트 StudyAce 를 만들었어요.', href: '/projects/studyace/' },
+  { when: '2026년 4월', what: '사용자 키에 맞춰 화면이 바뀌는 적응형 키오스크를 팀 R&E 로 연구했어요.', href: '/projects/kiosk/' },
+  { when: '2026년 5월', what: '교육 데이터를 인과추론으로 분석하는 대시보드를 만들었어요.', href: '/projects/edu-causal-compass/' },
+  { when: '2026년 6월', what: '동아리 서비스들을 한 저장소로 모으고, PC 한 대로 돌리는 구조를 잡았어요.', href: '/projects/binaryhub-ops/' },
+  { when: '2026년 7월', what: '학술 발표회용 멀티플레이 테트리스 SATRIS 를 만들고, 타워디펜스 게임도 시작했어요.', href: '/projects/satris/' },
+  { when: '2026년 8월', what: '직접 만든 동아리 블로그를 Ghost 로 옮겼어요.', href: '/projects/bblog/' },
+  { when: '2026년 8월', what: 'StudyAce 를 시안부터 다시 그려서 2.0 으로 새로 만들기 시작했어요.', href: '/projects/studyace/' },
+  { when: '2026년 10월', what: '북곽툴즈를 binaryhub.club 루트로 올렸어요.', href: '/projects/nsgh-tools/' },
+];
 ---
-<BaseLayout title="소개 — gitprogam" description="다루는 기술과 지금까지 만든 것의 흐름.">
+<BaseLayout title="소개 — gitprogam" description="쓰는 기술이랑 지금까지 뭘 만들어 왔는지 정리해 둔 페이지예요.">
   <div class="mx-auto max-w-5xl px-4 pt-14 pb-20 sm:px-6">
     <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">소개</h1>
     <div data-body class="prose-ko mt-8">
-      <p>Task 8 에서 작성.</p>
+      <p>
+        학교 다니면서 "이거 왜 이렇게 불편하지?" 싶은 게 있으면 웹으로 만들어 보는 편이에요.
+        한글 파일을 PDF 로 바꿔 주는 도구, 시험공부용 앱, 동아리 블로그 같은 걸 만들었고, 서버도 남한테 안 맡기고 직접 돌려요.
+      </p>
+      <p>
+        만드는 것만큼 운영하면서 배운 게 많았어요. 사이트가 한꺼번에 꺼진 날도 있었고, 아무도 모르게 http 로 열려 있던 적도 있고, 메모에 적어 둔 거랑 실제 동작이 달랐던 적도 있어요.
+        그래서 프로젝트마다 뭘 만들었는지랑 같이, 왜 그렇게 만들었고 어디서 삽질했는지를 적어 뒀어요.
+      </p>
+
+      <h2>다루는 기술</h2>
+      <ul>
+        {stacks.map((s) => <li><strong>{s.area}</strong> — {s.items}</li>)}
+      </ul>
+
+      <h2>지금까지의 흐름</h2>
+      <ul>
+        {timeline.map((t) => <li><strong>{t.when}</strong> — {published.has(t.href) ? <a href={t.href}>{t.what}</a> : t.what}</li>)}
+      </ul>
+
+      <p>
+        코드는 <a href="https://github.com/gitprogam">GitHub</a> 에 있어요. 운영 중인 서비스는 대부분 저장소를 비공개로 두고 있고, 공개된 건 프로젝트 페이지마다 링크해 놨어요.
+      </p>
     </div>
   </div>
 </BaseLayout>
