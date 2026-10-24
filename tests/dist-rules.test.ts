@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   checkCanonical, checkNofollow, checkEmails, checkPiiTerms,
-  checkProjectPage, checkOptionalScripts, draftSlugs,
+  checkProjectPage, checkOptionalScripts, draftSlugs, checkInternalLinks,
 } from '../scripts/dist-rules.mjs';
 
 const page = (head: string, body: string) => `<html><head>${head}</head><body>${body}</body></html>`;
@@ -85,5 +85,18 @@ describe('draftSlugs', () => {
   });
   it('CRLF 줄바꿈이어도 draft: false 를 알아본다', () => {
     expect(draftSlugs([{ slug: 'e', text: '---\r\ntitle: E\r\ndraft: false\r\n---\r\n' }])).toEqual([]);
+  });
+});
+
+describe('checkInternalLinks', () => {
+  const pages = new Set(['/', '/about/', '/projects/a/']);
+  it('있는 페이지로 가는 링크는 통과', () => {
+    expect(checkInternalLinks(page('', '<a href="/projects/a/">a</a><a href="/about/">s</a><a href="/#projects">p</a>'), pages)).toEqual([]);
+  });
+  it('없는 페이지(초안 등)로 가는 링크는 문제', () => {
+    expect(checkInternalLinks(page('', '<a href="/projects/b/">b</a>'), pages)).toEqual(['깨진 내부 링크: /projects/b/']);
+  });
+  it('바깥 링크와 정적 파일은 보지 않는다', () => {
+    expect(checkInternalLinks(page('<link rel="icon" href="/favicon.svg">', '<a href="https://binaryhub.club/x">x</a><a href="/favicon.svg">f</a>'), pages)).toEqual([]);
   });
 });

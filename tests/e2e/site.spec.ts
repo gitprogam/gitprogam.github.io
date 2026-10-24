@@ -63,3 +63,15 @@ test('대조군: 동작 줄이기를 끄면 같은 이동에서 애니메이션�
   // 위 테스트가 "측정이 아예 안 돼서 0" 인 것이 아님을 보증한다.
   expect(await transitionAnimationCount(browser, 'no-preference')).toBeGreaterThan(0);
 });
+
+test('동작 줄이기 설정에서는 시연 영상이 자동 재생되지 않고 재생 버튼이 보인다', async ({ browser }) => {
+  const ctx = await browser.newContext({ reducedMotion: 'reduce' });
+  const page = await ctx.newPage();
+  await page.goto('/projects/useless/');
+  const videos = page.locator('video[data-demo]');
+  await expect(videos.first()).toBeAttached();
+  const states = await videos.evaluateAll((vs) => vs.map((v) => ({ paused: (v as HTMLVideoElement).paused, controls: (v as HTMLVideoElement).controls })));
+  expect(states.length).toBeGreaterThan(0);
+  for (const s of states) expect(s).toEqual({ paused: true, controls: true });
+  await ctx.close();
+});

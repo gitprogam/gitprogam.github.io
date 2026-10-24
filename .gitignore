@@ -33,3 +33,4 @@ playwright-report/
 .env.*
 !.env.example
 .superpowers/
+notes/

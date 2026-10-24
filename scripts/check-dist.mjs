@@ -3,7 +3,7 @@ import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import {
   checkCanonical, checkNofollow, checkEmails, checkPiiTerms,
-  checkProjectPage, checkOptionalScripts, draftSlugs,
+  checkProjectPage, checkOptionalScripts, draftSlugs, checkInternalLinks,
 } from './dist-rules.mjs';
 
 const SITE = 'https://gitprogam.github.io';
@@ -24,8 +24,11 @@ const walk = (d) => readdirSync(d).flatMap((f) => {
   return statSync(p).isDirectory() ? walk(p) : [p];
 });
 
+const htmlFiles = walk(DIST).filter((f) => f.endsWith('.html'));
+const pagePaths = new Set(htmlFiles.map((f) => '/' + relative(DIST, f).split(sep).join('/').replace(/index\.html$/, '')));
+
 const problems = [];
-for (const file of walk(DIST).filter((f) => f.endsWith('.html'))) {
+for (const file of htmlFiles) {
   const rel = relative(DIST, file).split(sep).join('/');
   const html = readFileSync(file, 'utf8');
   const path = '/' + rel.replace(/index\.html$/, '');
@@ -36,6 +39,7 @@ for (const file of walk(DIST).filter((f) => f.endsWith('.html'))) {
     ...checkPiiTerms(html, terms),
     ...checkProjectPage(html, MIN_CHARS),
     ...checkOptionalScripts(html, env),
+    ...checkInternalLinks(html, pagePaths),
   ];
   for (const i of issues) problems.push(`${rel}: ${i}`);
 }

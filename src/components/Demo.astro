@@ -1,0 +1,33 @@
+---
+// 본문에 넣는 짧은 시연 영상. 소리 없이 반복 재생하고, 동작 줄이기 설정이면
+// 자동 재생을 멈추고 재생 버튼(controls)을 보여 준다.
+interface Props { src: string; poster: string; caption: string; portrait?: boolean }
+const { src, poster, caption, portrait = false } = Astro.props;
+---
+<figure class:list={['my-8', portrait && 'mx-auto max-w-xs']}>
+  <video
+    data-demo
+    src={src}
+    poster={poster}
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    class="w-full rounded-xl border border-line bg-mist"
+    aria-label={caption}
+  ></video>
+  <figcaption class="mt-2 text-sm text-sub">{caption}</figcaption>
+</figure>
+
+<script>
+  function respectReducedMotion() {
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    for (const v of document.querySelectorAll<HTMLVideoElement>('video[data-demo]')) {
+      v.pause();
+      v.removeAttribute('autoplay');
+      v.controls = true;
+    }
+  }
+  document.addEventListener('astro:page-load', respectReducedMotion);
+</script>

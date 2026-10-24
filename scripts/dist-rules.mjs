@@ -69,3 +69,15 @@ export function draftSlugs(sources) {
     })
     .map(({ slug }) => slug);
 }
+
+// 사이트 안 링크(/로 시작, 확장자 없는 페이지 주소)가 실제로 만들어진 페이지를 가리키는지.
+// 공개된 글이 아직 초안인 글을 링크하면 배포본에서 깨진 링크가 된다.
+export function checkInternalLinks(html, pages) {
+  const out = [];
+  for (const a of parse(html).querySelectorAll('a[href^="/"]')) {
+    const path = a.getAttribute('href').split('#')[0].split('?')[0];
+    if (/\.[a-z0-9]+$/i.test(path)) continue; // 정적 파일
+    if (!pages.has(path)) out.push(`깨진 내부 링크: ${path}`);
+  }
+  return out;
+}
