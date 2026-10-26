@@ -1,14 +1,14 @@
 ---
 title: 북곽툴즈
 summary: 한글·오피스 문서를 PDF 로 바꾸는 무료 문서 도구
-context: binaryhub.club
+context: tools.binaryhub.club
 period: { start: 2026-06-03 }
 status: live
 group: live
 role: 개발·운영
 stack: [Next.js, React, TypeScript, Tailwind CSS]
 links:
-  site: https://binaryhub.club/
+  site: https://tools.binaryhub.club/
 order: 1
 cover: ../../assets/shots/nsgh-tools.png
 coverAlt: 북곽툴즈 첫 화면. 파일을 끌어다 놓는 칸과 PDF·이미지 도구 목록
@@ -25,7 +25,7 @@ import Demo from '../../components/Demo.astro';
 
 ## 뭐가 있냐면
 
-[북곽툴즈](https://binaryhub.club/)는 가입도 설치도 없이 쓰는 문서 도구 모음이에요. 제일 많이 쓰는 건 한글·워드·엑셀·PPT 를 PDF 로 바꾸는 거고, 그 밖에 PDF 합치기/나누기, PDF 를 이미지로 뽑기, JPG·PNG·WebP·아이폰 HEIC 사진 변환 같은 게 있어요. 자주 쓰는 서식 내려받기랑, 수업 시간에 자리 뽑기나 모둠 나눌 때 쓰는 도구도 같이 넣어 뒀습니다.
+[북곽툴즈](https://tools.binaryhub.club/)는 가입도 설치도 없이 쓰는 문서 도구 모음이에요. 제일 많이 쓰는 건 한글·워드·엑셀·PPT 를 PDF 로 바꾸는 거고, 그 밖에 PDF 합치기/나누기, PDF 를 이미지로 뽑기, JPG·PNG·WebP·아이폰 HEIC 사진 변환 같은 게 있어요. 자주 쓰는 서식 내려받기랑, 수업 시간에 자리 뽑기나 모둠 나눌 때 쓰는 도구도 같이 넣어 뒀습니다.
 
 <Demo src="/media/nsgh-hwp-to-pdf.mp4" poster="/media/nsgh-hwp-to-pdf.jpg" caption="공개 서식(견적서) 한글 파일을 올려서 PDF 로 바꾸는 장면. 변환은 3초 남짓 걸렸어요." />
 
@@ -51,6 +51,8 @@ DB 는 아예 없어요. 파일 받아서 임시 폴더에서 처리하고, 결�
 
 해 보니까 경로 충돌은 눈에 보이는 페이지 주소보다 정적 파일, 업로드 이미지, 로그인 콜백 같은 안 보이는 경로에서 터지더라구요.
 
+근데 2주쯤 굴려 보니 굳이 이럴 이유가 없었어요. 그래서 10월 26일에 원래대로 되돌렸어요. 루트는 다시 동아리 포털이고, 북곽툴즈는 `tools.binaryhub.club` 이에요. 그 2주 동안 루트 주소로 검색에 잡힌 도구 페이지는 경로 그대로 tools 쪽으로 301 보내고, `/api/` 는 이번에도 리다이렉트 없이 그대로 받게 했어요. 올릴 때 붙였던 canonical 수정(대표 주소가 상대 경로로 나가던 버그)은 주소만 바꿔서 그대로 뒀고요.
+
 ## 지금은
 
-`binaryhub.club` 루트에서 변환 조합 안내 페이지 33개랑 서식 9종까지 해서 50개 남짓한 페이지를 돌리고 있어요. 필요한 도구는 문의로 받는 중인데, 지금 있는 도구도 대부분 그렇게 시작했어요.
+`tools.binaryhub.club` 에서 변환 조합 안내 페이지 33개랑 서식 9종까지 해서 50개 남짓한 페이지를 돌리고 있어요. 필요한 도구는 문의로 받는 중인데, 지금 있는 도구도 대부분 그렇게 시작했어요.
