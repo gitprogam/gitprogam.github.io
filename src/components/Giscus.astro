@@ -1,13 +1,17 @@
 ---
-// 프로젝트 페이지 아래 반응·댓글. 설정이 하나라도 없으면 아무것도 출력하지 않는다.
+// 프로젝트 페이지 아래 댓글. 설정이 하나라도 없으면 아무것도 출력하지 않는다.
 const repo = import.meta.env.PUBLIC_GISCUS_REPO;
 const repoId = import.meta.env.PUBLIC_GISCUS_REPO_ID;
 const category = import.meta.env.PUBLIC_GISCUS_CATEGORY;
 const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
 const enabled = Boolean(repo && repoId && category && categoryId);
+// 사이트 색·글꼴에 맞춘 테마(public/giscus-theme.css). giscus.app 이 불러가므로 공개 주소여야 한다.
+const theme = new URL('/giscus-theme.css', Astro.site).href;
 ---
 {enabled && (
-  <section class="mt-16 border-t border-line pt-8" aria-label="반응과 댓글">
+  <section class="mt-16 border-t border-line pt-8" aria-label="댓글">
+    {/* 본문(.prose-ko)과 같은 폭에 맞춘다. giscus 가 이 div 안에 iframe 을 넣는다. */}
+    <div class="max-w-[40rem]">
     <script
       is:inline
       data-astro-rerun
@@ -18,14 +22,15 @@ const enabled = Boolean(repo && repoId && category && categoryId);
       data-category-id={categoryId}
       data-mapping="pathname"
       data-strict="1"
-      data-reactions-enabled="1"
+      data-reactions-enabled="0"
       data-emit-metadata="0"
       data-input-position="top"
-      data-theme="light"
+      data-theme={theme}
       data-lang="ko"
       data-loading="lazy"
       crossorigin="anonymous"
       async
     ></script>
+    </div>
   </section>
 )}

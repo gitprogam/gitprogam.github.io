@@ -30,7 +30,7 @@ test('홈에서 프로젝트로 클라이언트 이동한 뒤에도 Giscus 스�
   await page.goto('/');
   await page.locator('a[href^="/projects/"]').first().click();
   await expect(page.locator('article[data-project]')).toBeVisible();
-  await expect(page.locator('section[aria-label="반응과 댓글"] script[src*="giscus.app"], section[aria-label="반응과 댓글"] .giscus')).toHaveCount(1, { timeout: 10_000 });
+  await expect(page.locator('section[aria-label="댓글"] script[src*="giscus.app"], section[aria-label="댓글"] .giscus')).toHaveCount(1, { timeout: 10_000 });
 });
 
 // 화면 전환 애니메이션이 실제로 시작되는 순간(viewTransition.ready)에 문서의 애니메이션 수를 잰다.

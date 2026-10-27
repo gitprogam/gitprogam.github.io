@@ -1,0 +1,96 @@
+/* Giscus 테마. 사이트(global.css)와 같은 색·글꼴로 맞춘다.
+   giscus 기본 light 테마 위에 덮어쓴다. Giscus.astro 의 data-theme 이 이 파일을 가리킨다. */
+@import url("https://giscus.app/themes/light.css");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+main {
+  --color-fg-default: #1d1d1f;
+  --color-fg-muted: #6e6e73;
+  --color-fg-subtle: #6e6e73;
+  --color-canvas-default: #ffffff;
+  --color-canvas-overlay: #ffffff;
+  --color-canvas-inset: #fbfbfd;
+  --color-canvas-subtle: #f5f5f7;
+  --color-border-default: #e8e8ed;
+  --color-border-muted: #e8e8ed;
+  --color-accent-fg: #0066cc;
+  --color-accent-emphasis: #0066cc;
+  --color-accent-subtle: #f0f6ff;
+  --color-btn-text: #1d1d1f;
+  --color-btn-bg: #f5f5f7;
+  --color-btn-border: transparent;
+  --color-btn-shadow: none;
+  --color-btn-inset-shadow: none;
+  --color-btn-hover-bg: #e8e8ed;
+  --color-btn-hover-border: transparent;
+  --color-btn-primary-text: #ffffff;
+  --color-btn-primary-bg: #0066cc;
+  --color-btn-primary-border: transparent;
+  --color-btn-primary-shadow: none;
+  --color-btn-primary-inset-shadow: none;
+  --color-btn-primary-hover-bg: #0058b0;
+  --color-btn-primary-hover-border: transparent;
+  --color-btn-primary-disabled-bg: #8fbbe6;
+  --color-primer-shadow-inset: none;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* 머리글: "댓글 N개" 를 사이트의 작은 회색 라벨처럼 */
+.gsc-comments-count {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6e6e73;
+}
+
+/* 입력칸: 탭 막대와 마크다운 안내는 숨기고 둥근 상자 하나로 */
+.gsc-comment-box {
+  border: 1px solid #e8e8ed !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  overflow: hidden;
+}
+.gsc-comment-box-tabs,
+.gsc-comment-box-markdown-hint {
+  display: none !important;
+}
+.gsc-comment-box-main {
+  padding: 12px 12px 0;
+}
+.gsc-comment-box-textarea,
+.gsc-comment-box-textarea-extras {
+  border: 0 !important;
+  box-shadow: none !important;
+  background: #fbfbfd !important;
+}
+.gsc-comment-box-textarea {
+  border-radius: 12px 12px 0 0 !important;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.gsc-comment-box-textarea-extras {
+  border-radius: 0 0 12px 12px !important;
+}
+.gsc-comment-box-bottom {
+  padding: 12px;
+}
+.gsc-comment-box .btn {
+  border-radius: 999px !important;
+  border: 0 !important;
+  padding: 8px 16px;
+  font-weight: 600;
+}
+
+/* 달린 댓글: 사이트 카드처럼 얇은 선과 둥근 모서리 */
+.gsc-comment > div {
+  border-color: #e8e8ed !important;
+  border-radius: 16px !important;
+}
+.gsc-comment-author-avatar img {
+  border-radius: 999px;
+}
+.gsc-comment-content {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
