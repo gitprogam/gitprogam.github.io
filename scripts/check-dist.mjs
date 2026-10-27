@@ -49,6 +49,9 @@ const srcDir = 'src/content/projects';
 const drafts = draftSlugs(readdirSync(srcDir).filter((f) => f.endsWith('.mdx'))
   .map((f) => ({ slug: f.replace(/\.mdx$/, ''), text: readFileSync(join(srcDir, f), 'utf8') })));
 const sitemap = existsSync(join(DIST, 'sitemap-0.xml')) ? readFileSync(join(DIST, 'sitemap-0.xml'), 'utf8') : '';
+// robots.txt 가 가리키는 sitemap.xml 은 sitemap-0.xml 과 같아야 한다(astro.config 의 sitemapAlias).
+const sitemapAlias = existsSync(join(DIST, 'sitemap.xml')) ? readFileSync(join(DIST, 'sitemap.xml'), 'utf8') : '';
+if (!sitemap || sitemapAlias !== sitemap) problems.push('sitemap.xml 이 없거나 sitemap-0.xml 과 다름');
 const home = readFileSync(join(DIST, 'index.html'), 'utf8');
 for (const slug of drafts) {
   if (existsSync(join(DIST, 'projects', slug))) problems.push(`초안 누출: dist/projects/${slug}/`);
