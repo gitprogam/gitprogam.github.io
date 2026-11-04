@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+Sitemap: https://gitprogam.github.io/sitemap.txt
 Sitemap: https://gitprogam.github.io/sitemap.xml
